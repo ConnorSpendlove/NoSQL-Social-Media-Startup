@@ -38,7 +38,7 @@ Welcome to the NoSQL Social Media Startup project! This project is a social medi
 1. Start the server:
 
    ```bash
-   npm start
+   node index.js
    ```
 
 2. Use an API testing tool like Insomnia or Postman to interact with the API endpoints.
