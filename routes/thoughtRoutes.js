@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Thought  = require('../models/Thought');
+const User = require('../models/User')
 
 // GET all thoughts
 router.get('/', async (req, res) => {
@@ -36,7 +37,8 @@ router.post('/', async (req, res) => {
     );
     res.json(newThought);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 
