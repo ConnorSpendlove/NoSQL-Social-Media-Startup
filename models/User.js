@@ -1,14 +1,12 @@
-// importing necessary components from mongoose
 const { Schema, model } = require('mongoose');
 
-// schema for the User model
 const userSchema = new Schema(
   {
     username: {
       type: String,
       unique: true,
       required: true,
-      trim: true,
+      trimmed: true,
     },
     email: {
       type: String,
@@ -30,7 +28,6 @@ const userSchema = new Schema(
     ],
   },
   {
-    // schema options
     toJSON: {
       virtuals: true,
     },
@@ -38,7 +35,6 @@ const userSchema = new Schema(
   }
 );
 
-// virtual for counting friends
 userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 });

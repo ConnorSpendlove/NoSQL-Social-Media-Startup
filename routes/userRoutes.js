@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User } = require('../models');
+const User = require('../models/User'); // Ensure the correct path to User model
 
 // GET all users
 router.get('/', async (req, res) => {
@@ -7,22 +7,22 @@ router.get('/', async (req, res) => {
     const users = await User.find().populate('thoughts').populate('friends');
     res.json(users);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 
 // GET a single user by its _id and populated thought and friend data
 router.get('/:id', async (req, res) => {
   try {
-    const user = await User.findById(req.params.id)
-      .populate('thoughts')
-      .populate('friends');
+    const user = await User.findById(req.params.id).populate('thoughts').populate('friends');
     if (!user) {
-      return res.status(404).json({ message: 'No user found with this id' });
+      return res.status(404).json({ message: 'No user found with this id!' });
     }
     res.json(user);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 
@@ -32,22 +32,22 @@ router.post('/', async (req, res) => {
     const newUser = await User.create(req.body);
     res.json(newUser);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 
 // PUT to update a user by its _id
 router.put('/:id', async (req, res) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedUser) {
-      return res.status(404).json({ message: 'No user found with this id' });
+      return res.status(404).json({ message: 'No user found with this id!' });
     }
     res.json(updatedUser);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 
@@ -56,11 +56,12 @@ router.delete('/:id', async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
     if (!deletedUser) {
-      return res.status(404).json({ message: 'No user found with this id' });
+      return res.status(404).json({ message: 'No user found with this id!' });
     }
     res.json(deletedUser);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 
@@ -73,11 +74,12 @@ router.post('/:userId/friends/:friendId', async (req, res) => {
       { new: true }
     );
     if (!user) {
-      return res.status(404).json({ message: 'No user found with this id' });
+      return res.status(404).json({ message: 'No user found with this id!' });
     }
     res.json(user);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 
@@ -90,11 +92,12 @@ router.delete('/:userId/friends/:friendId', async (req, res) => {
       { new: true }
     );
     if (!user) {
-      return res.status(404).json({ message: 'No user found with this id' });
+      return res.status(404).json({ message: 'No user found with this id!' });
     }
     res.json(user);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 
