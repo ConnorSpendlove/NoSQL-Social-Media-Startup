@@ -1,64 +1,44 @@
-// importing necessary components from mongoose and moment 
-const { Schema, model, Types } = require('mongoose');
-const moment = require('moment');
+const { Schema, model } = require('mongoose');
 
-// schema for the reaction 
-const reactionSchema = new Schema(
-  {
-    reactionId: {
-      type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId(),
-    },
-    reactionBody: {
-      type: String,
-      required: true,
-      maxlength: 280,
-    },
-    username: {
-      type: String,
-      required: true,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      get: (timestamp) => moment(timestamp).format('MMM DD, YYYY [at] hh:mm a'),
-    },
+const reactionSchema = new Schema({
+  reactionId: {
+    type: Schema.Types.ObjectId,
+    default: () => new Types.ObjectId(),
   },
-  {
-    toJSON: {
-      getters: true,
-    },
-  }
-);
+  reactionBody: {
+    type: String,
+    required: true,
+    maxlength: 280,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    get: (createdAtVal) => dateFormat(createdAtVal),
+  },
+});
 
-// schema for the thought model
-const thoughtSchema = new Schema(
-  {
-    thoughtText: {
-      type: String,
-      required: true,
-      minlength: 1,
-      maxlength: 280,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      get: (timestamp) => moment(timestamp).format('MMM DD, YYYY [at] hh:mm a'),
-    },
-    username: {
-      type: String,
-      required: true,
-    },
-    reactions: [reactionSchema],
+const thoughtSchema = new Schema({
+  thoughtText: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 280,
   },
-  {
-    toJSON: {
-      virtuals: true,
-      getters: true,
-    },
-    id: false,
-  }
-);
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    get: (createdAtVal) => dateFormat(createdAtVal),
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  reactions: [reactionSchema],
+});
 
 thoughtSchema.virtual('reactionCount').get(function () {
   return this.reactions.length;

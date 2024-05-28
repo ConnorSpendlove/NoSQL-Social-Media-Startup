@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Thought, User } = require('../models/Thought');
+const Thought  = require('../models/Thought');
 
 // GET all thoughts
 router.get('/', async (req, res) => {
@@ -7,7 +7,8 @@ router.get('/', async (req, res) => {
     const thoughts = await Thought.find();
     res.json(thoughts);
   } catch (err) {
-    res.status(500).json(err);
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error', error: err.message });
   }
 });
 
