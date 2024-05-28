@@ -1,7 +1,7 @@
-// Importing necessary components from mongoose
+// importing necessary components from mongoose
 const { Schema, model } = require('mongoose');
 
-// Defining the schema for the User model
+// schema for the User model
 const userSchema = new Schema(
   {
     username: {
@@ -30,7 +30,7 @@ const userSchema = new Schema(
     ],
   },
   {
-    // Schema options
+    // schema options
     toJSON: {
       virtuals: true,
     },
@@ -38,7 +38,7 @@ const userSchema = new Schema(
   }
 );
 
-// Virtual field for counting friends
+// virtual for counting friends
 userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 });
